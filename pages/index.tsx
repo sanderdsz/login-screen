@@ -38,8 +38,8 @@ const Home: NextPage = () => {
 
   return (
     <div className="h-screen flex flex-row">
-      <div className="w-1/2 flex flex-col justify-center bg-sky-200">
-        <div className="ml-28 mb-8 flex flex-col">
+      <div className="w-1/3 flex flex-col justify-center bg-sky-200">
+        <div className="ml-16 mb-8 flex flex-col">
           <span className="mb-2 text-4xl text-sky-700 font-['Poppins'] font-bold">Security first!</span>
 
           <span className="text-lg text-slate-700 font-['DMSans']">
@@ -58,7 +58,7 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      <div className='w-1/2 flex justify-center items-center bg-slate-100'>
+      <div className='w-2/3 flex justify-center items-center bg-slate-100'>
         <form className='flex flex-col' onSubmit={handleSubmit}>
 
           <div className="pb-10 flex flex-col">
