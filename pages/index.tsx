@@ -1,4 +1,5 @@
 import type {NextPage} from 'next'
+import {useRouter} from 'next/router'
 import {setupAPI} from '../services/api'
 import {setCookie} from 'nookies'
 import SideLogo from "../components/SideLogo";
@@ -10,6 +11,7 @@ interface UserAutentication {
 }
 
 const Home: NextPage = () => {
+  const router = useRouter()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -29,10 +31,12 @@ const Home: NextPage = () => {
       .post('/auth/login', data)
       .then(response => {
         userAutentication = response.data
-      })
 
-    setCookie(null, 'security.accessToken', `${userAutentication.accessToken}`, undefined)
-    setCookie(null, 'security.refreshToken', `${userAutentication.refreshToken}`, undefined)
+        setCookie(null, 'security.accessToken', `${userAutentication.accessToken}`, undefined)
+        setCookie(null, 'security.refreshToken', `${userAutentication.refreshToken}`, undefined)
+
+        router.push('/dashboard')
+      })
 
     console.log(userAutentication)
   }
@@ -51,7 +55,7 @@ const Home: NextPage = () => {
               welcome back
             </span>
             <span className="text-slate-400 font-['DMSans']">
-              please enter your details to see the magic
+              please enter your details to access
             </span>
           </div>
 
