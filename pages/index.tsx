@@ -3,6 +3,8 @@ import {useRouter} from 'next/router'
 import {setupAPI} from '../services/api'
 import {setCookie} from 'nookies'
 import SideLogo from "../components/SideLogo";
+import {useAuth} from "../contexts/AuthContext";
+import {useState} from "react";
 
 interface UserAutentication {
   email: string,
@@ -11,8 +13,12 @@ interface UserAutentication {
 }
 
 const Home: NextPage = () => {
-  const router = useRouter()
+  const { signIn } = useAuth();
 
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  // @ts-ignore
   const handleSubmit = async (event) => {
     event.preventDefault()
 
@@ -21,6 +27,12 @@ const Home: NextPage = () => {
       password: event.target.password.value
     }
 
+    console.log(email)
+    console.log(password)
+
+    await signIn({ email, password })
+
+    /*
     let userAutentication: UserAutentication = {
       email: '',
       accessToken: '',
@@ -37,8 +49,9 @@ const Home: NextPage = () => {
 
         router.push('/dashboard')
       })
+     */
 
-    console.log(userAutentication)
+    console.log()
   }
 
   return (
@@ -69,6 +82,8 @@ const Home: NextPage = () => {
                 id="email"
                 name="email"
                 placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="pb-2">
@@ -80,6 +95,8 @@ const Home: NextPage = () => {
                 id="password"
                 name="password"
                 placeholder="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
