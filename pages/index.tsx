@@ -13,7 +13,7 @@ interface UserAutentication {
 }
 
 const Home: NextPage = () => {
-  const { signIn } = useAuth();
+  const { signIn, responseError } = useAuth();
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,36 +22,7 @@ const Home: NextPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const data = {
-      email: event.target.email.value,
-      password: event.target.password.value
-    }
-
-    console.log(email)
-    console.log(password)
-
     await signIn({ email, password })
-
-    /*
-    let userAutentication: UserAutentication = {
-      email: '',
-      accessToken: '',
-      refreshToken: ''
-    }
-
-    const response = await setupAPI()
-      .post('/auth/login', data)
-      .then(response => {
-        userAutentication = response.data
-
-        setCookie(null, 'security.accessToken', `${userAutentication.accessToken}`, undefined)
-        setCookie(null, 'security.refreshToken', `${userAutentication.refreshToken}`, undefined)
-
-        router.push('/dashboard')
-      })
-     */
-
-    console.log()
   }
 
   return (
@@ -61,7 +32,7 @@ const Home: NextPage = () => {
       </div>
 
       <div className='w-full flex justify-center items-center bg-slate-100'>
-        <form className='flex flex-col' onSubmit={handleSubmit}>
+        <form className='flex flex-col absolute' onSubmit={handleSubmit}>
 
           <div className="pb-10 flex flex-col">
             <span className="pb-2 text-2xl text-slate-600 font-['Poppins'] font-bold">
@@ -115,8 +86,20 @@ const Home: NextPage = () => {
               sign in
             </span>
           </button>
-
         </form>
+        <div className="mt-80 flex justify-center">
+
+          {/*
+            responseError ?
+              <span className={`${ responseError ? "visible" : "invisible"} pt-4 text-sm text-red-500 font-['Poppins'] font-bold `}>
+                { responseError.message }
+              </span>
+            : null
+          */}
+          <span className={`${ responseError ? "opacity-100" : "opacity-0"} transition-opacity ease-in-out delay-150 duration-300 pt-4 text-sm text-red-500 font-['Poppins'] font-bold `}>
+             { responseError ? responseError.message : '' }
+          </span>
+        </div>
       </div>
     </div>
   )

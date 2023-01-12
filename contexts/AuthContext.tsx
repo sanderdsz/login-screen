@@ -2,6 +2,7 @@ import {createContext, ReactNode, useContext, useState} from "react";
 import {setupAPI} from "../services/api";
 import {setCookie} from "nookies";
 import Router from "next/router";
+import {instanceOf} from "prop-types";
 
 type User = {
   email: string
@@ -9,6 +10,7 @@ type User = {
 
 type AuthContextData = {
   user: User;
+  responseError: ResponseError;
   signIn: (credentials: SignInCredentials) => Promise<void>
 }
 
@@ -21,10 +23,19 @@ type SignInCredentials = {
   password: string
 }
 
+type ResponseError = {
+    error: string,
+    message: string,
+    path: string,
+    timestamp: string,
+    trace: string
+}
+
 export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({children}: AuthProviderProps) {
   const [user, setUser] = useState<User>();
+  const [responseError, setResponseError] = useState<ResponseError>();
 
   async function signIn({email, password}: SignInCredentials) {
     try {
@@ -48,16 +59,18 @@ export function AuthProvider({children}: AuthProviderProps) {
 
       setUser({ email });
 
-      await Router.push('dashboard')
+      await Router.push('dashboard');
 
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+
+      setResponseError(e.response.data);
+
     }
   }
 
   return (
     // @ts-ignore
-    <AuthContext.Provider value={{ signIn, user }}>
+    <AuthContext.Provider value={{ signIn, user, responseError }}>
       {children}
     </AuthContext.Provider>
   )
