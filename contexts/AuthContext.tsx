@@ -12,6 +12,7 @@ type AuthContextData = {
   user: User;
   responseError: ResponseError;
   signIn: (credentials: SignInCredentials) => Promise<void>
+  isLoading: boolean
 }
 
 type AuthProviderProps = {
@@ -36,9 +37,12 @@ export const AuthContext = createContext({} as AuthContextData);
 export function AuthProvider({children}: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const [responseError, setResponseError] = useState<ResponseError>();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function signIn({email, password}: SignInCredentials) {
     try {
+      setIsLoading(true);
+
       const response = await setupAPI()
         .post('/auth/login', {
           email,
@@ -59,9 +63,12 @@ export function AuthProvider({children}: AuthProviderProps) {
 
       setUser({ email });
 
+      setIsLoading(false);
+
       await Router.push('dashboard');
 
     } catch (e: any) {
+      setIsLoading(false);
 
       setResponseError(e.response.data);
 
@@ -70,7 +77,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   return (
     // @ts-ignore
-    <AuthContext.Provider value={{ signIn, user, responseError }}>
+    <AuthContext.Provider value={{ signIn, user, responseError, isLoading }}>
       {children}
     </AuthContext.Provider>
   )
