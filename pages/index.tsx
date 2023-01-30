@@ -1,7 +1,4 @@
 import type {NextPage} from 'next'
-import {useRouter} from 'next/router'
-import {setupAPI} from '../services/api'
-import {setCookie} from 'nookies'
 import SideLogo from "../components/SideLogo";
 import {useAuth} from "../contexts/AuthContext";
 import {useState} from "react";
@@ -84,7 +81,7 @@ const Home: NextPage = () => {
           >
               <div className={`${ isLoading ? "opacity-100" : "opacity-0"} mt-0.5 inset-x-20 absolute transition-opacity ease-in-out delay-150 duration-300`}>
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path
                     className="opacity-75"
                     fill="currentColor"
